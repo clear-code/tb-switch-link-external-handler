@@ -1,4 +1,4 @@
-PACKAGE_NAME = tb-switch-link-external-handler
+PACKAGE_NAME = switch-link-external-handler
 
 all: xpi
 

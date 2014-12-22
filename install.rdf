@@ -3,7 +3,7 @@
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
-                   em:id="tb-switch-link-external-handler@clear-code.com"
+                   em:id="switch-link-external-handler@clear-code.com"
                    em:name="Switch Link External Handler"
                    em:version="0.1"
                    em:description="Provides abilities to switch external handlers to open links."
