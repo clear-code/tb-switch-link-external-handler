@@ -3,6 +3,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 (function (aGlobal) {
-  var SwitchLinkExternalHandler = {};
+  var Cc = Components.classes;
+  var Ci = Components.interfaces;
+  var process = Cc["@mozilla.org/process/util;1"]
+                  .createInstance(Ci.nsIProcess);
+  var file = Cc["@mozilla.org/file/local;1"]
+               .createInstance(Ci.nsILocalFile);
+
+  var SwitchLinkExternalHandler = {
+    run: function run() {
+    },
+  };
+
   aGlobal.SwitchLinkExternalHandler = SwitchLinkExternalHandler;
 })(this);
