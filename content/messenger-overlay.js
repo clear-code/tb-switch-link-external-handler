@@ -32,9 +32,13 @@
     run: function run(aURL, aEvent) {
       if (aURL.match(this.ChromeMatcher)) {
         this.startChrome(aURL);
+        aEvent.preventDefault();
+        aEvent.stopPropagation();
       }
       else if (aURL.match(this.IEMatcher)) {
         this.startIE(aURL);
+        aEvent.preventDefault();
+        aEvent.stopPropagation();
       }
     },
     get IEMatcher() {
@@ -96,8 +100,6 @@
     let href = hRefForClickEvent(aEvent);
     if (href.match(/^https?:/)) {
       SwitchLinkExternalHandler.run(href, aEvent);
-      aEvent.preventDefault();
-      aEvent.stopPropagation();
     }
   }, true);
   aGlobal.SwitchLinkExternalHandler = SwitchLinkExternalHandler;
