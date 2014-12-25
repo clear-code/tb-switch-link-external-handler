@@ -95,6 +95,41 @@
       }
       catch(e) {
       }
+    },
+    shellSplit: function shellSplit(aString) {
+      var splitStrings = [];
+      var buff = "";
+      var inQuote = false;
+      for (var i = 0, strLength = aString.length; i < strLength; ++i) {
+        let char = aString.charAt(i);
+        switch (char) {
+        case '"':
+          if (inQuote) {
+            splitStrings.push(buff);
+            buff = "";
+            inQuote = false;
+          }
+          else {
+            inQuote = true;
+          }
+          break;
+        case ' ':
+          if (inQuote) {
+            buff += char;
+          }
+          else if (buff != "") {
+            splitStrings.push(buff);
+            buff = "";
+          }
+          break;
+        default:
+          buff += char;
+        }
+      }
+      if (buff != '') {
+        splitStrings.push(buff);
+      }
+      return splitStrings;
     }
   };
 
