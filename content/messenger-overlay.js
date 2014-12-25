@@ -30,7 +30,12 @@
       process.run(false, args, args.length);
     },
     run: function run(aURL, aEvent) {
-      this.startIE(aURL);
+      if (aURL.match(this.ChromeMatcher)) {
+        this.startChrome(aURL);
+      }
+      else if (aURL.match(this.IEMatcher)) {
+        this.startIE(aURL);
+      }
     },
     get IEMatcher() {
       delete this.IEMatcher;
