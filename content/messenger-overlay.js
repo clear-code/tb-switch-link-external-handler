@@ -9,6 +9,8 @@
                   .createInstance(Ci.nsIProcess);
   var file = Cc["@mozilla.org/file/local;1"]
                .createInstance(Ci.nsILocalFile);
+  const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
+  const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
 
   var SwitchLinkExternalHandler = {
     run: function run() {
