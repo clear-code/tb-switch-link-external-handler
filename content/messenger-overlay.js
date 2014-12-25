@@ -29,17 +29,20 @@
       process.init(file);
       process.run(false, args, args.length);
     },
-    run: function run(aURL, aEvent) {
-      if (aURL.match(this.ChromeMatcher)) {
-        this.startChrome(aURL);
-        aEvent.preventDefault();
-        aEvent.stopPropagation();
+    onLinkClick: function onLinkClick(aEvent) {
+      let href = hRefForClickEvent(aEvent);
+
+      if (href.match(this.ChromeMatcher)) {
+        this.startChrome(href);
       }
-      else if (aURL.match(this.IEMatcher)) {
-        this.startIE(aURL);
-        aEvent.preventDefault();
-        aEvent.stopPropagation();
+      else if (href.match(this.IEMatcher)) {
+        this.startIE(href);
       }
+      else {
+        return;
+      }
+      aEvent.preventDefault();
+      aEvent.stopPropagation();
     },
     get IEMatcher() {
       delete this.IEMatcher;
@@ -97,8 +100,7 @@
 
   var browser = document.getElementById("messagepane");
   browser.addEventListener("click", function onClick(aEvent) {
-    let href = hRefForClickEvent(aEvent);
-    SwitchLinkExternalHandler.run(href, aEvent);
+    SwitchLinkExternalHandler.onLinkClick(aEvent);
   }, true);
   aGlobal.SwitchLinkExternalHandler = SwitchLinkExternalHandler;
 })(this);
