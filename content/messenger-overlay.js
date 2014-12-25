@@ -13,6 +13,18 @@
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
 
   var SwitchLinkExternalHandler = {
+    startIE: function startIE() {
+      file.initWithPath(kIEPath);
+      process.init(file);
+      var args = ["https://dev.mozilla.jp"];
+      process.run(false, args, args.length);
+    },
+    startChrome: function startChrome() {
+      file.initWithPath(kChromePath);
+      process.init(file);
+      var args = ["https://dev.mozilla.jp"];
+      process.run(false, args, args.length);
+    },
     run: function run() {
     },
   };
