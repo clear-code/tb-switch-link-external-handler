@@ -98,9 +98,7 @@
   var browser = document.getElementById("messagepane");
   browser.addEventListener("click", function onClick(aEvent) {
     let href = hRefForClickEvent(aEvent);
-    if (href.match(/^https?:/)) {
-      SwitchLinkExternalHandler.run(href, aEvent);
-    }
+    SwitchLinkExternalHandler.run(href, aEvent);
   }, true);
   aGlobal.SwitchLinkExternalHandler = SwitchLinkExternalHandler;
 })(this);
