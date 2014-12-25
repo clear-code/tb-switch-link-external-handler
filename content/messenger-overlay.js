@@ -9,7 +9,7 @@
                  .getService(Ci.nsIPrefBranch);
   const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
-  const PREFIX = 'extensions.switch-link-external-handler@clear-code.com.';
+  const kPrefPrefix = 'extensions.switch-link-external-handler@clear-code.com.';
   var SwitchLinkExternalHandler = {
     startIE: function startIE(aURL) {
       this.startExternalProcess(kIEPath, aURL);
