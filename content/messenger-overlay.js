@@ -5,10 +5,6 @@
 (function (aGlobal) {
   var Cc = Components.classes;
   var Ci = Components.interfaces;
-  var process = Cc["@mozilla.org/process/util;1"]
-                  .createInstance(Ci.nsIProcess);
-  var file = Cc["@mozilla.org/file/local;1"]
-               .createInstance(Ci.nsILocalFile);
   const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
   var SwitchLinkExternalHandler = {
@@ -19,6 +15,10 @@
       this.startExternalProcess(kChromePath);
     },
     startExternalProcess: function startExternalProcess(aPath) {
+      var process = Cc["@mozilla.org/process/util;1"]
+                      .createInstance(Ci.nsIProcess);
+      var file = Cc["@mozilla.org/file/local;1"]
+                   .createInstance(Ci.nsILocalFile);
       file.initWithPath(aPath);
       process.init(file);
       var args = ["https://dev.mozilla.jp"];
