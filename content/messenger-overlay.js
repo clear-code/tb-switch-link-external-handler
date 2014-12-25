@@ -16,9 +16,11 @@
     startIE: function startIE(aURL) {
       this.startExternalProcess(kIEPath, aURL);
     },
+
     startChrome: function startChrome(aURL) {
       this.startExternalProcess(kChromePath, aURL);
     },
+
     startExternalProcess: function startExternalProcess(aPath, aURL) {
       var process = Cc["@mozilla.org/process/util;1"]
                       .createInstance(Ci.nsIProcess);
@@ -29,6 +31,7 @@
       process.init(file);
       process.run(false, args, args.length);
     },
+
     onLinkClick: function onLinkClick(aEvent) {
       let href = hRefForClickEvent(aEvent);
 
@@ -44,14 +47,17 @@
       aEvent.preventDefault();
       aEvent.stopPropagation();
     },
+
     get IEMatcher() {
       delete this.IEMatcher;
       return this.IEMatcher = this.urlMatcher(kIEPatternsPref);
     },
+
     get ChromeMatcher() {
       delete this.ChromeMatcher;
       return this.ChromeMatcher = this.urlMatcher(kChromePatternsPref);
     },
+
     urlMatcher: function urlMatcher(aPatternsPref) {
       var patterns = [];
       Pref.getChildList(aPatternsPref, {}).forEach(function(aPref) {
@@ -78,6 +84,7 @@
         return null;
       }
     },
+
     getStringPref: function getStringPref(aKey, aDefault) {
       try {
         return Pref.getComplexValue(aKey, Ci.nsISupportsString).data;
@@ -86,6 +93,7 @@
       }
       return aDefault || '';
     },
+
     setStringPref: function setStringPref(aKey, aValue) {
       var str = Cc["@mozilla.org/supports-string;1"]
                   .createInstance(Ci.nsISupportsString);
@@ -96,6 +104,7 @@
       catch(e) {
       }
     },
+
     shellSplit: function shellSplit(aString) {
       var splitStrings = [];
       var buff = "";
