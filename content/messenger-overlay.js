@@ -5,6 +5,8 @@
 (function (aGlobal) {
   const Cc = Components.classes;
   const Ci = Components.interfaces;
+  const Pref = Cc['@mozilla.org/preferences;1']
+                 .getService(Ci.nsIPrefBranch);
   const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
   var SwitchLinkExternalHandler = {
