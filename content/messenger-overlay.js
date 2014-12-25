@@ -25,8 +25,15 @@
       process.run(false, aURLs, aURLs.length);
     },
     run: function run() {
+      this.startIE();
     },
   };
 
+  var browser = document.getElementById("messagepane");
+  browser.addEventListener("click", function onClick(aEvent) {
+    SwitchLinkExternalHandler.run();
+    aEvent.preventDefault();
+    aEvent.stopPropagation();
+  }, true);
   aGlobal.SwitchLinkExternalHandler = SwitchLinkExternalHandler;
 })(this);
