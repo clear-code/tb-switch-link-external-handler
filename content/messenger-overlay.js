@@ -32,6 +32,35 @@
     run: function run(aURL) {
       this.startIE(aURL);
     },
+    get IEMatcher() {
+      delete this.IEMatcher;
+      return this.IEMatcher = this.urlMatcher(kIEPatternsPref);
+    },
+    get ChromeMatcher() {
+      delete this.ChromeMatcher;
+      return this.ChromeMatcher = this.urlMatcher(kChromePatternsPref);
+    },
+    urlMatcher: function urlMatcher(aPatternsPref) {
+      var patterns = [];
+      Pref.getChildList(aPatternsPref, {}).forEach(function(aPref) {
+        try {
+          if (Pref.getPrefType(aPref) != Pref.PREF_STRING)
+            return;
+          let pattern = this.getStringPref(aPref, '');
+          pattern = pattern.trim();
+          if (!pattern)
+            return;
+
+          pattern = pattern.replace(/([$^\|.{}\[\]()+\\])/g, "$1")
+                           .replace(/\*/g, ".*")
+                           .replace(/\?/g, ".");
+          patterns.push(pattern);
+        }
+        catch(e) {
+        }
+      }, this);
+      return new RegExp("^(" + patterns.join("|") + ")", "i");
+    },
     getStringPref: function getStringPref(aKey, aDefault) {
       try {
         return Pref.getComplexValue(aKey, Ci.nsISupportsString).data;
