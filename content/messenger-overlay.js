@@ -10,6 +10,8 @@
   const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
   const kPrefPrefix = "extensions.switch-link-external-handler@clear-code.com.";
+  const kIEPatternsPref = kPrefPrefix +  "ie.petterns.";
+  const kChromePatternsPref = kPrefPrefix + "chrome.patterns.";
   var SwitchLinkExternalHandler = {
     startIE: function startIE(aURL) {
       this.startExternalProcess(kIEPath, aURL);
