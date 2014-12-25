@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 (function (aGlobal) {
-  var Cc = Components.classes;
-  var Ci = Components.interfaces;
+  const Cc = Components.classes;
+  const Ci = Components.interfaces;
   const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
   var SwitchLinkExternalHandler = {
