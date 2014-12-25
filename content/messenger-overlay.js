@@ -11,16 +11,15 @@
                .createInstance(Ci.nsILocalFile);
   const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
-
   var SwitchLinkExternalHandler = {
     startIE: function startIE() {
-      file.initWithPath(kIEPath);
-      process.init(file);
-      var args = ["https://dev.mozilla.jp"];
-      process.run(false, args, args.length);
+      this.startExternalProcess(kIEPath);
     },
     startChrome: function startChrome() {
-      file.initWithPath(kChromePath);
+      this.startExternalProcess(kChromePath);
+    },
+    startExternalProcess: function startExternalProcess(aPath) {
+      file.initWithPath(aPath);
       process.init(file);
       var args = ["https://dev.mozilla.jp"];
       process.run(false, args, args.length);
