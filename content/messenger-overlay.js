@@ -31,9 +31,12 @@
 
   var browser = document.getElementById("messagepane");
   browser.addEventListener("click", function onClick(aEvent) {
-    SwitchLinkExternalHandler.run();
-    aEvent.preventDefault();
-    aEvent.stopPropagation();
+    let href = hRefForClickEvent(aEvent);
+    if (href.match(/^https?:/)) {
+      SwitchLinkExternalHandler.run();
+      aEvent.preventDefault();
+      aEvent.stopPropagation();
+    }
   }, true);
   aGlobal.SwitchLinkExternalHandler = SwitchLinkExternalHandler;
 })(this);
