@@ -30,6 +30,24 @@
     run: function run(aURL) {
       this.startIE(aURL);
     },
+    getStringPref: function getStringPref(aKey, aDefault) {
+      try {
+        return Pref.getComplexValue(aKey, Ci.nsISupportsString).data;
+      }
+      catch(e) {
+      }
+      return aDefault || '';
+    },
+    setStringPref: function setStringPref(aKey, aValue) {
+      var str = Cc["@mozilla.org/supports-string;1"]
+                  .createInstance(Ci.nsISupportsString);
+      str.data = aValue;
+      try {
+        Pref.setComplexValue(aKey, Ci.nsISupportsString, str);
+      }
+      catch(e) {
+      }
+    }
   };
 
   var browser = document.getElementById("messagepane");
