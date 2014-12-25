@@ -29,7 +29,7 @@
       process.init(file);
       process.run(false, args, args.length);
     },
-    run: function run(aURL) {
+    run: function run(aURL, aEvent) {
       this.startIE(aURL);
     },
     get IEMatcher() {
@@ -90,7 +90,7 @@
   browser.addEventListener("click", function onClick(aEvent) {
     let href = hRefForClickEvent(aEvent);
     if (href.match(/^https?:/)) {
-      SwitchLinkExternalHandler.run(href);
+      SwitchLinkExternalHandler.run(href, aEvent);
       aEvent.preventDefault();
       aEvent.stopPropagation();
     }
