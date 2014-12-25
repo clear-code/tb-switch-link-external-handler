@@ -59,7 +59,12 @@
         catch(e) {
         }
       }, this);
-      return new RegExp("^(" + patterns.join("|") + ")", "i");
+      if (patterns.length > 0) {
+        return new RegExp("^(" + patterns.join("|") + ")", "i");
+      }
+      else {
+        return null;
+      }
     },
     getStringPref: function getStringPref(aKey, aDefault) {
       try {
