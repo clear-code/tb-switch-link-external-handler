@@ -17,20 +17,31 @@
   const kChromePatternsPref = kPrefPrefix + "chrome.patterns.";
   var SwitchLinkExternalHandler = {
     startIE: function startIE(aURL) {
-      this.startExternalProcess(kIEPath, aURL);
+      this.startExternalProcess(this.IECommandline, aURL);
     },
 
     startChrome: function startChrome(aURL) {
-      this.startExternalProcess(kChromePath, aURL);
+      this.startExternalProcess([kChromePath], aURL);
     },
 
-    startExternalProcess: function startExternalProcess(aPath, aURL) {
+    startExternalProcess: function startExternalProcess(aCommandLine, aURL) {
       var process = Cc["@mozilla.org/process/util;1"]
                       .createInstance(Ci.nsIProcess);
       var file = Cc["@mozilla.org/file/local;1"]
                    .createInstance(Ci.nsILocalFile);
-      var args = [aURL];
-      file.initWithPath(aPath);
+      var exePath = aCommandLine[0];
+      var args = [];
+      var placeholderFound = false;
+      for (var i = 1, length = aCommandLine.length; i < length; ++i) {
+        if (aCommandLine[i].indexOf("%1") >= 0) {
+          placeholderFound = true;
+        }
+        args.push(aCommandLine[i].replace("%1", aURL));
+      }
+      if (!placeholderFound) {
+        args.push(aURL);
+      }
+      file.initWithPath(exePath);
       process.init(file);
       process.run(false, args, args.length);
     },
