@@ -10,7 +10,6 @@
                  .getService(Ci.nsIPrefBranch);
   const Registry = Cu.import("resource://gre/modules/WindowsRegistry.jsm")
                      .WindowsRegistry;
-  const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
   const kPrefPrefix = "extensions.switch-link-external-handler@clear-code.com.";
   const kIEPatternsPref = kPrefPrefix +  "ie.patterns.";
