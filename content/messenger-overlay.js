@@ -5,8 +5,11 @@
 (function (aGlobal) {
   const Cc = Components.classes;
   const Ci = Components.interfaces;
+  const Cu = Components.utils;
   const Pref = Cc['@mozilla.org/preferences;1']
                  .getService(Ci.nsIPrefBranch);
+  const Registry = Cu.import("resource://gre/modules/WindowsRegistry.jsm")
+                     .WindowsRegistry;
   const kIEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
   const kChromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
   const kPrefPrefix = "extensions.switch-link-external-handler@clear-code.com.";
@@ -30,6 +33,16 @@
       file.initWithPath(aPath);
       process.init(file);
       process.run(false, args, args.length);
+    },
+
+    get IECommandline() {
+      delete this.IECommandline;
+      var commandLine = Registry.readRegKey(
+        Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
+        "Applications\\iexplore.exe\\shell\\open\\command",
+        ""
+      );
+      return this.IECommandline = this.shellSplit(commandLine);
     },
 
     onLinkClick: function onLinkClick(aEvent) {
