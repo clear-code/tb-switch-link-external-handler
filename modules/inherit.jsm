@@ -13,31 +13,31 @@
 const EXPORTED_SYMBOLS = ['inherit'];
 
 function toPropertyDescriptors(aProperties) {
-	var descriptors = {};
-	Object.keys(aProperties).forEach(function(aProperty) {
-		var description = Object.getOwnPropertyDescriptor(aProperties, aProperty);
-		descriptors[aProperty] = description;
-	});
-	return descriptors;
+  var descriptors = {};
+  Object.keys(aProperties).forEach(function(aProperty) {
+    var description = Object.getOwnPropertyDescriptor(aProperties, aProperty);
+    descriptors[aProperty] = description;
+  });
+  return descriptors;
 }
 
 function inherit(aParent, aExtraProperties) {
-	var global;
-	if (Components.utils.getGlobalForObject)
-		global = Components.utils.getGlobalForObject(aParent);
-	else
-		global = aParent.valueOf.call();
-	global = global || this;
+  var global;
+  if (Components.utils.getGlobalForObject)
+    global = Components.utils.getGlobalForObject(aParent);
+  else
+    global = aParent.valueOf.call();
+  global = global || this;
 
-	var ObjectClass = global.Object || Object;
+  var ObjectClass = global.Object || Object;
 
-	if (!ObjectClass.create) {
-		aExtraProperties = aExtraProperties || new ObjectClass;
-		aExtraProperties.__proto__ = aParent;
-		return aExtraProperties;
-	}
-	if (aExtraProperties)
-		return ObjectClass.create(aParent, toPropertyDescriptors(aExtraProperties));
-	else
-		return ObjectClass.create(aParent);
+  if (!ObjectClass.create) {
+    aExtraProperties = aExtraProperties || new ObjectClass;
+    aExtraProperties.__proto__ = aParent;
+    return aExtraProperties;
+  }
+  if (aExtraProperties)
+    return ObjectClass.create(aParent, toPropertyDescriptors(aExtraProperties));
+  else
+    return ObjectClass.create(aParent);
 }
