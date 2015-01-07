@@ -137,6 +137,15 @@
       return splitStrings;
     },
 
+    get priority() {
+      try {
+        return Pref.getIntPref(kPrefPrefix + this.name + ".priority");
+      }
+      catch(e) {
+      }
+      return 0;
+    },
+
     getStringPref: function getStringPref(aKey, aDefault) {
       try {
         return Pref.getComplexValue(aKey, Ci.nsISupportsString).data;
@@ -201,23 +210,32 @@
       return this.Chrome = new Chrome();
     },
 
+    get browsers() {
+      delete this.browsers;
+      var browsers = [this.IE, this.Chrome];
+      browsers.sort(function (a, b) {
+        return b.priority - a.priority;
+      });
+      return this.browsers = browsers;
+    },
+
     onLinkClick: function onLinkClick(aEvent) {
       let href = hRefForClickEvent(aEvent);
 
       if (!href)
         return;
 
-      if (this.Chrome.test(href)) {
-        this.Chrome.start(href);
-      }
-      else if (this.IE.test(href)) {
-        this.IE.start(href);
-      }
-      else {
-        return;
-      }
-      aEvent.preventDefault();
-      aEvent.stopPropagation();
+      this.browsers.some(function (aBrowser) {
+        if (aBrowser.test(href)) {
+          aBrowser.start(href);
+          aEvent.preventDefault();
+          aEvent.stopPropagation();
+          return true;
+        }
+        else {
+          return false;
+        }
+      }, this);
     }
   };
 
