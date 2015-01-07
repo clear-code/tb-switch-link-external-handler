@@ -17,20 +17,18 @@
   BrowserBase.prototype = {
     get commandLine() {
       if (!this._commandLine) {
-        this.RegistryKeys.some(function (aKey) {
-          var commandLine = Registry.readRegKey(
+        for (var i = 0, length = this.RegistryKeys.length; i < length; ++i) {
+          let aKey = this.RegistryKeys[i];
+          let commandLine = Registry.readRegKey(
             aKey.key,
             aKey.path,
             aKey.name
           );
           if (commandLine) {
             this._commandLine = this.shellSplit(commandLine + aKey.append);
-            return true;
+            break;
           }
-          else {
-            return false;
-          }
-        }, this);
+        }
       }
       return this._commandLine;
     },
@@ -225,17 +223,15 @@
       if (!href)
         return;
 
-      this.browsers.some(function (aBrowser) {
+      for (var i = 0, length = this.browsers.length; i < length; ++i) {
+        let aBrowser = this.browsers[i];
         if (aBrowser.test(href)) {
           aBrowser.start(href);
           aEvent.preventDefault();
           aEvent.stopPropagation();
-          return true;
+          break;
         }
-        else {
-          return false;
-        }
-      }, this);
+      }
     }
   };
 
