@@ -56,7 +56,7 @@
 
     get ChromeCommandLine() {
       delete this.ChromeCommandLine;
-      let chromeRegistryKeys = new Array(
+      let chromeRegistryKeys = [
         {key: Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
          path: "ChromeHTML\\shell\\open\\command", name: "", append: ""},
         {key: Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
@@ -64,7 +64,7 @@
         {key: Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
          path: "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Google Chrome",
          name: "InstallLocation", append: "\\chrome.exe -- \"%1\""}
-      );
+      ];
       var ChromeCommandLine;
       chromeRegistryKeys.forEach(function (aKey) {
         var commandLine = Registry.readRegKey(
