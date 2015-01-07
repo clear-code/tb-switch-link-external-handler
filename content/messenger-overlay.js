@@ -66,7 +66,7 @@
          name: "InstallLocation", append: "\\chrome.exe -- \"%1\""}
       ];
       var ChromeCommandLine;
-      chromeRegistryKeys.forEach(function (aKey) {
+      chromeRegistryKeys.some(function (aKey) {
         var commandLine = Registry.readRegKey(
           aKey.key,
           aKey.path,
@@ -74,6 +74,10 @@
         );
         if (commandLine) {
           ChromeCommandLine = commandLine + aKey.append;
+          return true;
+        }
+        else {
+          return false;
         }
       }, this);
       return this.ChromeCommandLine = this.shellSplit(ChromeCommandLine);
