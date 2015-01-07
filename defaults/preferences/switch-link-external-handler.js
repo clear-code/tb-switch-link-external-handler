@@ -8,3 +8,4 @@
 // pref("extensions.switch-link-external-handler@clear-code.com.ie.patterns.2", "https://*.mozilla.org");
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.0", "https://*.clear-code.com");
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.1", "https://github.com");
+// pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.2", "http://?.hatena.ne.jp");
