@@ -56,12 +56,27 @@
 
     get ChromeCommandLine() {
       delete this.ChromeCommandLine;
-      var commandLine = Registry.readRegKey(
-        Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
-        "ChromeHTML\\shell\\open\\command",
-        ""
+      let chromeRegistryKeys = new Array(
+        {key: Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
+         path: "ChromeHTML\\shell\\open\\command", name: "", append: ""},
+        {key: Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
+         path: "Applications\\chrome.exe\\shell\\open\\command", name: "", append: ""},
+        {key: Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
+         path: "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Google Chrome",
+         name: "InstallLocation", append: "\\chrome.exe -- \"%1\""}
       );
-      return this.ChromeCommandLine = this.shellSplit(commandLine);
+      var ChromeCommandLine;
+      chromeRegistryKeys.forEach(function (aKey) {
+        var commandLine = Registry.readRegKey(
+          aKey.key,
+          aKey.path,
+          aKey.name
+        );
+        if (commandLine) {
+          ChromeCommandLine = commandLine + aKey.append;
+        }
+      }, this);
+      return this.ChromeCommandLine = this.shellSplit(ChromeCommandLine);
     },
 
     onLinkClick: function onLinkClick(aEvent) {
