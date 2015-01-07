@@ -14,6 +14,116 @@
   const kIEPatternsPref = kPrefPrefix +  "ie.patterns.";
   const kChromePatternsPref = kPrefPrefix + "chrome.patterns.";
   var { inherit } = Cu.import("resource://switch-link-external-handler-modules/inherit.jsm", {});
+
+  function BrowserBase() {}
+  BrowserBase.prototype = {
+    startExternalProcess: function startExternalProcess(aCommandLine, aURL) {
+      var process = Cc["@mozilla.org/process/util;1"]
+                      .createInstance(Ci.nsIProcess);
+      var file = Cc["@mozilla.org/file/local;1"]
+                   .createInstance(Ci.nsILocalFile);
+      var exePath = aCommandLine[0];
+      var args = [];
+      var placeholderFound = false;
+      for (var i = 1, length = aCommandLine.length; i < length; ++i) {
+        if (aCommandLine[i].indexOf("%1") >= 0) {
+          placeholderFound = true;
+        }
+        args.push(aCommandLine[i].replace("%1", aURL));
+      }
+      if (!placeholderFound) {
+        args.push(aURL);
+      }
+      file.initWithPath(exePath);
+      process.init(file);
+      process.run(false, args, args.length);
+    },
+
+    urlMatcher: function urlMatcher(aPatternsPref) {
+      var patterns = [];
+      dump(aPatternsPref + "\n");
+      Pref.getChildList(aPatternsPref, {}).forEach(function(aPref) {
+        try {
+          if (Pref.getPrefType(aPref) != Pref.PREF_STRING)
+            return;
+          let pattern = this.getStringPref(aPref, '');
+          pattern = pattern.trim();
+          if (!pattern)
+            return;
+
+          pattern = pattern.replace(/([$^\|.{}\[\]()+\\])/g, "$1")
+                           .replace(/\*/g, ".*")
+                           .replace(/\?/g, ".");
+          patterns.push(pattern);
+        }
+        catch(e) {
+          dump(e + "\n");
+        }
+      }, this);
+      if (patterns.length > 0) {
+        return new RegExp("^(" + patterns.join("|") + ")", "i");
+      }
+      else {
+        return null;
+      }
+    },
+
+    shellSplit: function shellSplit(aString) {
+      var splitStrings = [];
+      var buff = "";
+      var inQuote = false;
+      for (var i = 0, strLength = aString.length; i < strLength; ++i) {
+        let char = aString.charAt(i);
+        switch (char) {
+        case '"':
+          if (inQuote) {
+            splitStrings.push(buff);
+            buff = "";
+            inQuote = false;
+          }
+          else {
+            inQuote = true;
+          }
+          break;
+        case ' ':
+          if (inQuote) {
+            buff += char;
+          }
+          else if (buff != "") {
+            splitStrings.push(buff);
+            buff = "";
+          }
+          break;
+        default:
+          buff += char;
+        }
+      }
+      if (buff != '') {
+        splitStrings.push(buff);
+      }
+      return splitStrings;
+    },
+        getStringPref: function getStringPref(aKey, aDefault) {
+      try {
+        return Pref.getComplexValue(aKey, Ci.nsISupportsString).data;
+      }
+      catch(e) {
+      }
+      return aDefault || '';
+    },
+
+    setStringPref: function setStringPref(aKey, aValue) {
+      var str = Cc["@mozilla.org/supports-string;1"]
+                  .createInstance(Ci.nsISupportsString);
+      str.data = aValue;
+      try {
+        Pref.setComplexValue(aKey, Ci.nsISupportsString, str);
+      }
+      catch(e) {
+      }
+    }
+  };
+
   var SwitchLinkExternalHandler = {
     startIE: function startIE(aURL) {
       this.startExternalProcess(this.IECommandline, aURL);
