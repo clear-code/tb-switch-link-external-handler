@@ -103,7 +103,8 @@
       }
       return splitStrings;
     },
-        getStringPref: function getStringPref(aKey, aDefault) {
+
+    getStringPref: function getStringPref(aKey, aDefault) {
       try {
         return Pref.getComplexValue(aKey, Ci.nsISupportsString).data;
       }
