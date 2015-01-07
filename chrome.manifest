@@ -5,3 +5,4 @@
 content	switch-link-external-handler	content/
 
 overlay	chrome://messenger/content/messenger.xul	chrome://switch-link-external-handler/content/messenger-overlay.xul
+resource	switch-link-external-handler-modules	modules/

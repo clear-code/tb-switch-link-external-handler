@@ -13,6 +13,7 @@
   const kPrefPrefix = "extensions.switch-link-external-handler@clear-code.com.";
   const kIEPatternsPref = kPrefPrefix +  "ie.patterns.";
   const kChromePatternsPref = kPrefPrefix + "chrome.patterns.";
+  var { inherit } = Cu.import("resource://switch-link-external-handler-modules/inherit.jsm", {});
   var SwitchLinkExternalHandler = {
     startIE: function startIE(aURL) {
       this.startExternalProcess(this.IECommandline, aURL);
