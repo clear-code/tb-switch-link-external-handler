@@ -20,7 +20,7 @@
     },
 
     startChrome: function startChrome(aURL) {
-      this.startExternalProcess([kChromePath], aURL);
+      this.startExternalProcess(this.ChromeCommandLine, aURL);
     },
 
     startExternalProcess: function startExternalProcess(aCommandLine, aURL) {
@@ -53,6 +53,16 @@
         ""
       );
       return this.IECommandline = this.shellSplit(commandLine);
+    },
+
+    get ChromeCommandLine() {
+      delete this.ChromeCommandLine;
+      var commandLine = Registry.readRegKey(
+        Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
+        "ChromeHTML\\shell\\open\\command",
+        ""
+      );
+      return this.ChromeCommandLine = this.shellSplit(commandLine);
     },
 
     onLinkClick: function onLinkClick(aEvent) {
