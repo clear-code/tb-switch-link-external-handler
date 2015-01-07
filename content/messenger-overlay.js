@@ -11,12 +11,37 @@
   const Registry = Cu.import("resource://gre/modules/WindowsRegistry.jsm")
                      .WindowsRegistry;
   const kPrefPrefix = "extensions.switch-link-external-handler@clear-code.com.";
-  const kIEPatternsPref = kPrefPrefix +  "ie.patterns.";
-  const kChromePatternsPref = kPrefPrefix + "chrome.patterns.";
   var { inherit } = Cu.import("resource://switch-link-external-handler-modules/inherit.jsm", {});
 
   function BrowserBase() {}
   BrowserBase.prototype = {
+    get commandLine() {
+      if (!this._commandLine) {
+        this.RegistryKeys.some(function (aKey) {
+          var commandLine = Registry.readRegKey(
+            aKey.key,
+            aKey.path,
+            aKey.name
+          );
+          if (commandLine) {
+            this._commandLine = this.shellSplit(commandLine + aKey.append);
+            return true;
+          }
+          else {
+            return false;
+          }
+        }, this);
+      }
+      return this._commandLine;
+    },
+
+    get matcher() {
+      if (!this._matcher)
+        this._matcher = this.urlMatcher(kPrefPrefix + this.name + ".patterns.");
+
+      return this._matcher;
+    },
+
     start: function start(aURL) {
       this.startExternalProcess(this.commandLine, aURL);
     },
@@ -131,66 +156,34 @@
 
   function IE() {}
   IE.prototype = inherit(BrowserBase.prototype, {
-     get commandLine() {
-      if (!this._commandLine) {
-        var commandLine = Registry.readRegKey(
-          Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
-          "Applications\\iexplore.exe\\shell\\open\\command",
-          ""
-        );
-        this._commandLine = this.shellSplit(commandLine);
-      }
+    RegistryKeys : [
+      {key:    Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
+       path:   "Applications\\iexplore.exe\\shell\\open\\command",
+       name:   "",
+       append: ""}
+    ],
 
-      return this._commandLine;
-    },
-
-    get matcher() {
-      if (!this._matcher)
-        this._matcher = this.urlMatcher(kIEPatternsPref);
-
-      return this._matcher;
-    }
+    name: "ie"
   });
 
   function Chrome() {}
   Chrome.prototype = inherit(BrowserBase.prototype, {
-    get commandLine() {
-      if (!this._commandLine) {
-        let chromeRegistryKeys = [
-          {key: Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
-           path: "ChromeHTML\\shell\\open\\command", name: "", append: ""},
-          {key: Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
-           path: "Applications\\chrome.exe\\shell\\open\\command", name: "", append: ""},
-          {key: Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
-           path: "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Google Chrome",
-           name: "InstallLocation", append: "\\chrome.exe -- \"%1\""}
-        ];
-        var ChromeCommandLine;
-        chromeRegistryKeys.some(function (aKey) {
-          var commandLine = Registry.readRegKey(
-            aKey.key,
-            aKey.path,
-            aKey.name
-          );
-          if (commandLine) {
-            ChromeCommandLine = commandLine + aKey.append;
-            return true;
-          }
-          else {
-            return false;
-          }
-        }, this);
-        this._commandLine = this.shellSplit(ChromeCommandLine);
-      }
-      return this._commandLine;
-    },
+    RegistryKeys: [
+      {key:    Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
+       path:   "ChromeHTML\\shell\\open\\command",
+       name:   "",
+       append: ""},
+      {key:    Ci.nsIWindowsRegKey.ROOT_KEY_CLASSES_ROOT,
+       path:   "Applications\\chrome.exe\\shell\\open\\command",
+       name:   "",
+       append: ""},
+      {key:    Ci.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
+       path:   "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Google Chrome",
+       name:   "InstallLocation",
+       append: "\\chrome.exe -- \"%1\""}
+    ],
 
-    get matcher() {
-      if (!this._matcher)
-        this._matcher = this.urlMatcher(kChromePatternsPref);
-
-      return this._matcher;
-    }
+    name: "chrome"
   });
 
   var SwitchLinkExternalHandler = {
