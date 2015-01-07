@@ -11,7 +11,7 @@
   const Registry = Cu.import("resource://gre/modules/WindowsRegistry.jsm")
                      .WindowsRegistry;
   const kPrefPrefix = "extensions.switch-link-external-handler@clear-code.com.";
-  var { inherit } = Cu.import("resource://switch-link-external-handler-modules/inherit.jsm", {});
+  var { inherit } = Cu.import("resource://switch-link-external-handler-modules/lib/inherit.jsm", {});
 
   function BrowserBase() {}
   BrowserBase.prototype = {
