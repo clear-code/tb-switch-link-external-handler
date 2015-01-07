@@ -42,6 +42,10 @@
       return this._matcher;
     },
 
+    test: function test(aHref) {
+      return this.matcher.test(aHref);
+    },
+
     start: function start(aURL) {
       this.startExternalProcess(this.commandLine, aURL);
     },
@@ -203,10 +207,10 @@
       if (!href)
         return;
 
-      if (href.match(this.Chrome.matcher)) {
+      if (this.Chrome.test(href)) {
         this.Chrome.start(href);
       }
-      else if (href.match(this.IE.matcher)) {
+      else if (this.IE.test(href)) {
         this.IE.start(href);
       }
       else {
