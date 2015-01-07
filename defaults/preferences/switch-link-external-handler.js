@@ -5,12 +5,13 @@
 // Domain Sample
 // pref("extensions.switch-link-external-handler@clear-code.com.ie.patterns.0", "http://*.microsoft.com");
 // pref("extensions.switch-link-external-handler@clear-code.com.ie.patterns.1", "https://*.microsoft.com");
+// This entry should be ingored because lower priority.
 // pref("extensions.switch-link-external-handler@clear-code.com.ie.patterns.2", "https://*.mozilla.org");
 // pref("extensions.switch-link-external-handler@clear-code.com.ie.patterns.3", "http://groonga.org");
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.0", "https://*.clear-code.com");
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.1", "https://github.com");
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.2", "http://?.hatena.ne.jp");
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.3", "http://groonga.org");
-// // Priority Sample
+// Priority Sample
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.priority", 50);
 // pref("extensions.switch-link-external-handler@clear-code.com.ie.priority", 20);
