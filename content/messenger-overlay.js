@@ -67,10 +67,13 @@
     onLinkClick: function onLinkClick(aEvent) {
       let href = hRefForClickEvent(aEvent);
 
-      if (href && href.match(this.ChromeMatcher)) {
+      if (!href)
+        return;
+
+      if (href.match(this.ChromeMatcher)) {
         this.startChrome(href);
       }
-      else if (href && href.match(this.IEMatcher)) {
+      else if (href.match(this.IEMatcher)) {
         this.startIE(href);
       }
       else {
