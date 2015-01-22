@@ -11,6 +11,7 @@
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.0", "https://*.clear-code.com");
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.1", "https://github.com");
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.2", "http://?.hatena.ne.jp");
+// Following entry should be overridden because higher priority.
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.patterns.3", "http://groonga.org");
 // Priority Sample
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.priority", 50);
