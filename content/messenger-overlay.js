@@ -13,19 +13,28 @@
   const kPrefPrefix = "extensions.switch-link-external-handler@clear-code.com.";
   var { inherit } = Cu.import("resource://switch-link-external-handler-modules/lib/inherit.jsm", {});
 
+  function log(aMessage) {
+    Cc['@mozilla.org/steel/application;1']
+      .getService(Ci.steelIApplication)
+      .console.log(aMessage);
+  }
+
   function BrowserBase() {}
   BrowserBase.prototype = {
     get commandLine() {
       if (!this._commandLine) {
         for (var i = 0, length = this.RegistryKeys.length; i < length; ++i) {
           let aKey = this.RegistryKeys[i];
+          log(this.name + ': trying to get command line from '+JSON.stringify(aKey));
           let commandLine = Registry.readRegKey(
             aKey.key,
             aKey.path,
             aKey.name
           );
+          log(this.name + ':   commandLine => '+JSON.stringify(commandLine));
           if (commandLine) {
             this._commandLine = this.shellSplit(commandLine + aKey.append);
+            log(this.name + ':      => '+JSON.stringify(this._commandLine));
             break;
           }
         }
@@ -41,7 +50,9 @@
     },
 
     test: function test(aHref) {
-      return this.matcher.test(aHref);
+      var matched = this.matcher.test(aHref);
+      log(this.name + ': testing '+aHref+' with '+this.matcher + ' => '+matched);
+      return matched;
     },
 
     start: function start(aURL) {
@@ -65,6 +76,7 @@
       if (!placeholderFound) {
         args.push(aURL);
       }
+      log(this.name + ': starting '+exePath+' with args: '+JSON.stringify(args));
       file.initWithPath(exePath);
       process.init(file);
       process.run(false, args, args.length);
