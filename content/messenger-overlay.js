@@ -87,8 +87,9 @@
     },
 
     urlMatcher: function urlMatcher(aPatternsPref) {
+      log(this.name + ': building matcher');
       var patterns = [];
-      dump(aPatternsPref + "\n");
+      try {
       Pref.getChildList(aPatternsPref, {}).forEach(function(aPref) {
         try {
           if (Pref.getPrefType(aPref) != Pref.PREF_STRING)
@@ -105,12 +106,19 @@
         }
         catch(e) {
           dump(e + "\n");
+          Components.utils.reportError(e);
         }
       }, this);
+      log('patterns = '+patterns);
       if (patterns.length > 0) {
         return new RegExp("^(" + patterns.join("|") + ")", "i");
       }
       else {
+        return null;
+      }
+      }
+      catch(error) {
+        Components.utils.reportError(error);
         return null;
       }
     },
@@ -235,18 +243,27 @@
 
     onLinkClick: function onLinkClick(aEvent) {
       let href = hRefForClickEvent(aEvent);
+      log('link cliekced, @href = '+href);
 
       if (!href)
         return;
 
+      try {
       for (var i = 0, length = this.browsers.length; i < length; ++i) {
         let aBrowser = this.browsers[i];
+        log('try to test '+aBrowser.name);
         if (aBrowser.test(href)) {
+          log(aBrowser.name+' matched');
           aBrowser.start(href);
           aEvent.preventDefault();
           aEvent.stopPropagation();
-          break;
+          return;
         }
+      }
+      log('no match');
+      }
+      catch(error) {
+        Components.utils.reportError(error);
       }
     }
   };
