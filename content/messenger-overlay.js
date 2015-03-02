@@ -50,7 +50,11 @@
     },
 
     test: function test(aHref) {
-      var matched = this.matcher.test(aHref);
+      var matcher = this.matcher;
+      if (!matcher)
+        return false;
+
+      var matched = matcher.test(aHref);
       log(this.name + ': testing '+aHref+' with '+this.matcher + ' => '+matched);
       return matched;
     },
