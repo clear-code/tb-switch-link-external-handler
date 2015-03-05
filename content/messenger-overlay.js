@@ -243,7 +243,7 @@
 
     onLinkClick: function onLinkClick(aEvent) {
       let href = hRefForClickEvent(aEvent);
-      log('link cliekced, @href = '+href);
+      log('link clicked, @href = '+href);
 
       if (!href)
         return;
