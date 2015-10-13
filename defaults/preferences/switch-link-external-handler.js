@@ -27,3 +27,4 @@
 // Priority Sample
 // pref("extensions.switch-link-external-handler@clear-code.com.chrome.priority", 50);
 // pref("extensions.switch-link-external-handler@clear-code.com.ie.priority", 20);
+
