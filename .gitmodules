@@ -1,6 +1,6 @@
-[submodule "buildscript"]
-	path = buildscript
-	url = https://github.com/piroor/makexpi.git
 [submodule "extlib/inherit.jsm"]
 	path = extlib/inherit.jsm
 	url = https://github.com/piroor/fxaddonlib-inherit.git
+[submodule "makexpi"]
+	path = makexpi
+	url = https://github.com/piroor/makexpi.git
