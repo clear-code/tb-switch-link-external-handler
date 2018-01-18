@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="switch-link-external-handler@clear-code.com"
                    em:name="Switch Link External Handler"
-                   em:version="0.1"
+                   em:version="0.2"
                    em:type="2"
                    em:description="Provides abilities to switch external handlers to open links."
                    em:creator="ClearCode Inc."
